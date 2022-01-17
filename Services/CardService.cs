@@ -34,5 +34,30 @@ namespace YGOPriceCalculator.Services
         {
             await _context.InsertManyAsync(cards);
         }
+
+        public async Task UpdateCards(List<Card> cards)
+        {
+            List<WriteModel<Card>> writeModels = new List<WriteModel<Card>>();
+            cards.ForEach(card => {
+                var filter = Builders<Card>.Filter.Eq(c => c.CardID, card.CardID);
+                var updateCardmarket = Builders<Card>.Update.Set(c => c.CardmarketPrice, card.CardmarketPrice);
+                var updateTcgplayer = Builders<Card>.Update.Set(c => c.TcgplayerPrice, card.TcgplayerPrice);
+                var updateEbay = Builders<Card>.Update.Set(c => c.EbayPrice, card.EbayPrice);
+                var updateAmazon = Builders<Card>.Update.Set(c => c.AmazonPrice, card.AmazonPrice);
+                var updateCoolstuff = Builders<Card>.Update.Set(c => c.CoolstuffincPrice, card.CoolstuffincPrice);
+                writeModels.Add(new UpdateOneModel<Card>(filter, updateCardmarket));
+                writeModels.Add(new UpdateOneModel<Card>(filter, updateTcgplayer));
+                writeModels.Add(new UpdateOneModel<Card>(filter, updateEbay));
+                writeModels.Add(new UpdateOneModel<Card>(filter, updateAmazon));
+                writeModels.Add(new UpdateOneModel<Card>(filter, updateCoolstuff));
+            });
+
+            await _context.BulkWriteAsync(writeModels);
+        }
+
+        public bool hasCards()
+        {
+            return _context.EstimatedDocumentCount() > 0;
+        }
     }
 }

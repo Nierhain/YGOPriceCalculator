@@ -39,6 +39,11 @@ namespace YGOPriceCalculator.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateDb(List<Card> cards)
         {
+            if (_service.hasCards())
+            {
+                await _service.UpdateCards(cards);
+                return CreatedAtAction(nameof(GetCards), cards);
+            }
             await _service.CreateCards(cards);
             return CreatedAtAction(nameof(GetCards), cards);
         }
