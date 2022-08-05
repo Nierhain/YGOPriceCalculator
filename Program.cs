@@ -1,21 +1,25 @@
-using YGOPriceCalculator.Models;
-using YGOPriceCalculator.Services;
+using AutoMapper;
+using AutoMapper.EquivalencyExpression;
+using YGOPriceCalculator.Core.Data;
 
-var CorsPolicy = "YGOPC_Policy";
+var corsPolicy = "YGOPC_Policy";
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.Configure<CardDatabaseSettings>(builder.Configuration.GetSection("CardStoreDatabase"));
-builder.Services.AddSingleton<CardService>();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: CorsPolicy, corsBuilder =>
-    {
-        corsBuilder.WithOrigins("https://localhost:5002").AllowAnyHeader().AllowAnyMethod();
-    });
+    options.AddPolicy(corsPolicy,
+        corsBuilder => { corsBuilder.WithOrigins("https://localhost:5002").AllowAnyHeader().AllowAnyMethod(); });
 });
+
+builder.Services.AddAutoMapper((provider, options) =>
+{
+    options.AddCollectionMappers();
+    options.UseEntityFrameworkCoreModel<DbContext>(provider);
+}, typeof(Program));
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -25,8 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(CorsPolicy);
-app.UseAuthorization();
+app.UseCors(corsPolicy);
 
 app.MapControllers();
 
