@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { Layout } from "antd";
+import { useEffect, useState } from "react";  
 import { DbCard } from "./models/Card";
 import { Menu } from "./components/Menu";
 import { CardSelectionTable } from "./components/CardSelectionTable";
 import { CardAPI } from "./api";
-const { Header, Content, Sider, Footer } = Layout;
+import { AppShell, Group, Header,Text} from "@mantine/core";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 
 function App() {
   const [database, setDatabase] = useState<DbCard[]>([]);
@@ -19,16 +17,19 @@ function App() {
   }, [])
 
   return (
-    <Layout style={{minHeight: '100vh'}}>
-      <Menu />
-      <Layout>
-        <Header></Header>
-        <Content style={{padding: 20}}>
-          <CardSelectionTable db={database} />
-        </Content>
-        <Footer></Footer>
-      </Layout>
-    </Layout>
+    <AppShell
+      navbar={<Menu />}
+      header={
+        <Header height={70} p="md">
+          <Group sx={{ height: '100%' }} px={20} position="apart">
+            <Text>YGO PriceCalculator</Text>
+            <ThemeSwitcher />
+          </Group>
+        </Header>
+      }
+    >
+      
+    </AppShell>
   );
 }
 
