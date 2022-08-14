@@ -8,4 +8,9 @@ public class User : IEntity
     public List<Collection> Collections { get; set; }
     public Guid Id { get; set; }
     public byte[] RowVersion { get; set; }
+
+    public string[] Includes => new[]
+    {
+        nameof(Collections)
+    };
 }

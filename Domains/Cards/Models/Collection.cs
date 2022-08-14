@@ -8,6 +8,8 @@ public class Collection : IEntity
     public User User { get; set; }
     public Guid Id { get; set; }
     public byte[] RowVersion { get; set; }
+
+    public string[] Includes => new[] {nameof(Cards), nameof(User)};
 }
 
 public class CollectionItem : IEntity

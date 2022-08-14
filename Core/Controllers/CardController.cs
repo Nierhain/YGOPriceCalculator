@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using YGOPriceCalculator.Domains.Cards.Models;
+using YGOPriceCalculator.Domains.Cards.Queries;
 
 namespace YGOPriceCalculator.Core.Controllers;
 
@@ -18,7 +19,7 @@ public class CardController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetCards()
     {
-        return await _mediator.Send(new GetCards());
+        return Ok(await _mediator.Send(new GetCards()));
     }
 
     [HttpGet("first")]
@@ -30,7 +31,7 @@ public class CardController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCard(Guid id)
     {
-        return Ok();
+        return Ok(await _mediator.Send(new GetCard(id)));
     }
 
     [HttpPost]
