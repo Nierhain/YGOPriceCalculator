@@ -17,9 +17,9 @@ public class CardController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetCards()
+    public async Task<IActionResult> GetAllCards()
     {
-        return Ok(await _mediator.Send(new GetCards()));
+        return Ok(await _mediator.Send(new GetAllCards()));
     }
 
     [HttpGet("first")]

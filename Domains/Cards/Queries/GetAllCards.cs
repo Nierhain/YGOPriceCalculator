@@ -5,18 +5,18 @@ using YGOPriceCalculator.Domains.Cards.Models;
 
 namespace YGOPriceCalculator.Domains.Cards.Queries;
 
-public class GetCards: IRequest<Response<List<Card>>>{ }
+public class GetAllCards: IRequest<Response<List<Card>>>{ }
 
-public class GetCardsHandler : IRequestHandler<GetCards, Response<List<Card>>>
+public class GetAllCardsHandler : IRequestHandler<GetAllCards, Response<List<Card>>>
 {
     private readonly IDbRepository _repository;
 
-    public GetCardsHandler(IDbRepository repository)
+    public GetAllCardsHandler(IDbRepository repository)
     {
         _repository = repository;
     }
 
-    public async Task<Response<List<Card>>> Handle(GetCards request, CancellationToken cancellationToken)
+    public async Task<Response<List<Card>>> Handle(GetAllCards request, CancellationToken cancellationToken)
     {
         return Response<List<Card>>.Ok(await _repository.ReadList<Card>(x => true));
     }

@@ -1,10 +1,12 @@
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
+using Microsoft.EntityFrameworkCore;
 using YGOPriceCalculator.Core.Data;
 
 var corsPolicy = "YGOPC_Policy";
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<YGOPriceCalculator.Core.Data.DbContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("Default")); });
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -17,7 +19,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddAutoMapper((provider, options) =>
 {
     options.AddCollectionMappers();
-    options.UseEntityFrameworkCoreModel<DbContext>(provider);
+    options.UseEntityFrameworkCoreModel<YGOPriceCalculator.Core.Data.DbContext>(provider);
 }, typeof(Program));
 
 var app = builder.Build();
