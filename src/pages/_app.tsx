@@ -3,7 +3,9 @@ import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import { loggerLink } from "@trpc/client/links/loggerLink";
 import { withTRPC } from "@trpc/next";
 import { SessionProvider } from "next-auth/react";
-import type { AppType } from "next/dist/shared/lib/utils";
+import { ThemeProvider } from "next-themes";
+import type { AppType, NextComponentType } from "next/dist/shared/lib/utils";
+import React, { FunctionComponent, useState } from "react";
 import superjson from "superjson";
 import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
@@ -14,8 +16,23 @@ const MyApp: AppType = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <ThemeProvider attribute="class">
+        <div className="grid h-screen grid-cols-4 gap-5">
+          <Sidebar className="col-span-1 border shadow" />
+          <div className="col-span-3 border">
+            <Component {...pageProps} />
+          </div>
+        </div>
+      </ThemeProvider>
     </SessionProvider>
+  );
+};
+
+const Sidebar = ({ className }: React.ComponentPropsWithoutRef<"div">) => {
+  return (
+    <div className={className}>
+      <p>Sidebar</p>
+    </div>
   );
 };
 
