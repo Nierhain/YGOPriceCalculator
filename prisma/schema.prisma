@@ -3,11 +3,13 @@
 
 generator client {
   provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider             = "postgresql"
+  provider             = "mysql"
   url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
 model Collection {
@@ -78,9 +80,11 @@ model User {
   email         String?      @unique
   emailVerified DateTime?
   image         String?
+  role          String? @default("User")
   collections   Collection[]
   accounts      Account[]
   sessions      Session[]
+
 }
 
 model VerificationToken {

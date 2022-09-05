@@ -6,7 +6,9 @@ import { ThemeProvider } from "next-themes";
 import type { AppType, NextComponentType } from "next/dist/shared/lib/utils";
 import React, { FunctionComponent, useState } from "react";
 import superjson from "superjson";
+import Header from "../components/Header/Header";
 import Page from "../components/Page";
+import Sidebar from "../components/Sidebar";
 import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
 const MyApp: AppType = ({
@@ -16,9 +18,21 @@ const MyApp: AppType = ({
     return (
         <SessionProvider session={session}>
             <ThemeProvider attribute="class">
-                <Component {...pageProps} />
+                <Sidebar />
+                <Content>
+                    <Header />
+                    <Component {...pageProps} />
+                </Content>
             </ThemeProvider>
         </SessionProvider>
+    );
+};
+
+const Content = (props: React.ComponentPropsWithoutRef<"div">) => {
+    return (
+        <div className="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
+            {props.children}
+        </div>
     );
 };
 

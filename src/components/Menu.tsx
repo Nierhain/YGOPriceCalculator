@@ -9,7 +9,7 @@ interface MenuProps {
 export default function Menu({ items }: MenuProps) {
     const { pathname } = useRouter()
     const isActive = (path: string) => {
-        return pathname.startsWith(path)
+        return pathname === path
     }
     return (
         <ul className="mt-8 space-y-2 tracking-wide">

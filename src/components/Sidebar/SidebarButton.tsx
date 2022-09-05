@@ -2,7 +2,7 @@ import { MouseEventHandler, ReactNode } from "react";
 
 interface SidebarButtonProps {
     label: string;
-    isActive: boolean;
+    isActive?: boolean;
     icon?: ReactNode;
     onClick?: (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -14,7 +14,7 @@ const baseClasses =
 
 const getClassNames = (active: boolean) => {
     if (active) {
-        let classes = baseClasses + " bg-blue-600"
+        let classes = baseClasses + " bg-blue-600 text-white"
         console.log("active")
         return classes;
     }
@@ -23,7 +23,7 @@ const getClassNames = (active: boolean) => {
 
 export default function SidebarButton({
     label,
-    isActive,
+    isActive = false,
     icon,
     onClick,
 }: SidebarButtonProps) {
